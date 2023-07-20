@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+    <h2>Редактирование имени пользователя</h2>
+    <form method="POST" action="{% url 'edit_username' user.id %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn custom-button" type="submit">Сохранить</button>
+    </form>
+{% endblock %}
