@@ -8,7 +8,6 @@ import google.auth
 from google.oauth2.credentials import Credentials
 from dotenv import load_dotenv
 import httplib2
-# from googleapiclient import discovery, errors
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from oauth2client.service_account import ServiceAccountCredentials
@@ -17,7 +16,7 @@ from googleapiclient.http import MediaIoBaseDownload
 load_dotenv()
 CREDENTIALS_FILE = os.getenv('CREDENTIALS_FILE')
 diskId = os.getenv('diskId')
-from coaching.database import server
+from coach.bot import db
 
 
 credentials = ServiceAccountCredentials.from_json_keyfile_name(CREDENTIALS_FILE,  'https://www.googleapis.com/auth/drive')
@@ -157,9 +156,10 @@ def list_files_recursively(folder_id, prefix):
                             print('______'*20)
                         name = file["name"].replace(' ', '_').replace('-', '_')
 
-                        doc_to_db = [path[1], path[2], path[3], name, file["id"], file["modifiedTime"], file["webViewLink"]]
+                        doc_to_db = [path[1], path[2], path[3], name, file["id"], file["webViewLink"]]
                         # print(doc_to_db)
-                        download_flag = server.new_doc(doc_to_db)
+                        download_flag = db.add_google_file(doc_to_db)
+                        # db.add_google_file(year, category, topic, title, google_id, link)
 
                         file_name = prefix + '/' + file["name"]
  
